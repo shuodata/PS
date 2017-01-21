@@ -1,4 +1,3 @@
-# Project 3: Unsupervised Learning
 ## Creating Customer Segments
 
 ### Install
@@ -29,6 +28,5 @@ This will open the iPython Notebook software and project file in your browser.
 
 ## Data
 
-The dataset used in this project is included as `customers.csv`. You can find more information on this dataset on the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Wholesale+customers) page.
-# PS
-# PS
+The dataset used in this project is included as `AggregatedData.csv`.
+
