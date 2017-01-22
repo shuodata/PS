@@ -82,13 +82,13 @@ def channel_results(reduced_data, outliers, pca_samples):
 
 	# Check that the dataset is loadable
 	try:
-	    full_data = pd.read_csv("customers.csv")
+	    full_data = pd.read_csv("AggregatedData.csv")
 	except:
 	    print ("Dataset could not be loaded. Is the file missing?")
 	    return False
 
 	# Create the Channel DataFrame
-	channel = pd.DataFrame(full_data['Channel'], columns = ['Channel'])
+	channel = pd.DataFrame(full_data['Region'], columns = ['Region'])
 	channel = channel.drop(channel.index[outliers]).reset_index(drop = True)
 	labeled = pd.concat([reduced_data, channel], axis = 1)
 	
@@ -110,6 +110,102 @@ def channel_results(reduced_data, outliers, pca_samples):
 		ax.scatter(x = sample[0], y = sample[1], \
 	           s = 200, linewidth = 3, color = 'black', marker = 'o', facecolors = 'none');
 		ax.scatter(x = sample[0]+0.25, y = sample[1]+0.3, marker='$%d$'%(i), alpha = 1, s=125);
+
+	# Set plot title
+	ax.set_title("PCA-Reduced Data Labeled by 'Channel'\nTransformed Sample Data Circled");
+
+
+
+
+def Region_results(reduced_data, outliers, pca_samples):
+	'''
+	Visualizes the PCA-reduced cluster data in two dimensions using the full dataset
+	Data is labeled by "Channel" and cues added for student-selected sample data
+	'''
+
+	# Check that the dataset is loadable
+	try:
+		full_data = pd.read_csv("AggregatedData.csv")
+	except:
+		print("Dataset could not be loaded. Is the file missing?")
+		return False
+
+	# Create the Channel DataFrame
+	channel = pd.DataFrame(full_data['Region'], columns=['Region'])
+	channel = channel.drop(channel.index[outliers]).reset_index(drop=True)
+	labeled = pd.concat([reduced_data, channel], axis=1)
+
+	# Generate the cluster plot
+	fig, ax = plt.subplots(figsize=(14, 8))
+
+	# Color map
+	cmap = cm.get_cmap('gist_rainbow')
+
+	# Color the points based on assigned Channel
+	labels = ['Asia', 'WesternEurope', "NorthAmerica", "SouthAmerica"]
+	grouped = labeled.groupby('Region')
+	for i, channel in grouped:
+		if i == "Asia":
+			i = 1
+		if i == "WesternEurope":
+			i = 2
+		if i == "NorthAmerica":
+			i = 3
+		if i == "SouthAmerica":
+			i = 4
+		channel.plot(ax=ax, kind='scatter', x='Dimension 1', y='Dimension 2', \
+					 color=cmap((i - 1) * 1.0 / 4), label=labels[i - 1], s=10, alpha=0.4);
+
+	# Plot transformed sample points
+	for i, sample in enumerate(pca_samples):
+		ax.scatter(x=sample[0], y=sample[1], \
+				   s=200, linewidth=3, color='black', marker='o', facecolors='none');
+		ax.scatter(x=sample[0] + 0.25, y=sample[1] + 0.3, marker='$%d$' % (i), alpha=1, s=125);
+
+	# Set plot title
+	ax.set_title("PCA-Reduced Data Labeled by 'Channel'\nTransformed Sample Data Circled");
+
+
+def Gender_results(reduced_data, outliers, pca_samples):
+	'''
+	Visualizes the PCA-reduced cluster data in two dimensions using the full dataset
+	Data is labeled by "Channel" and cues added for student-selected sample data
+	'''
+
+	# Check that the dataset is loadable
+	try:
+		full_data = pd.read_csv("AggregatedData.csv")
+	except:
+		print("Dataset could not be loaded. Is the file missing?")
+		return False
+
+	# Create the Channel DataFrame
+	channel = pd.DataFrame(full_data['Gender'], columns=['Gender'])
+	channel = channel.drop(channel.index[outliers]).reset_index(drop=True)
+	labeled = pd.concat([reduced_data, channel], axis=1)
+
+	# Generate the cluster plot
+	fig, ax = plt.subplots(figsize=(14, 8))
+
+	# Color map
+	cmap = cm.get_cmap('gist_rainbow')
+
+	# Color the points based on assigned Channel
+	labels = ['Male', 'Female']
+	grouped = labeled.groupby('Gender')
+	for i, channel in grouped:
+		if i == "Male":
+			i = 1
+		if i == "Female":
+			i = 2
+		channel.plot(ax=ax, kind='scatter', x='Dimension 1', y='Dimension 2', \
+					 color=cmap((i - 1) * 1.0 / 2), label=labels[i - 1], s=10, alpha=0.4);
+
+	# Plot transformed sample points
+	for i, sample in enumerate(pca_samples):
+		ax.scatter(x=sample[0], y=sample[1], \
+				   s=200, linewidth=3, color='black', marker='o', facecolors='none');
+		ax.scatter(x=sample[0] + 0.25, y=sample[1] + 0.3, marker='$%d$' % (i), alpha=1, s=125);
 
 	# Set plot title
 	ax.set_title("PCA-Reduced Data Labeled by 'Channel'\nTransformed Sample Data Circled");
